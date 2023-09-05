@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <title>Word &amp; Worship - Remote Display</title>
+  <style>
+    
+    #mainbackgroundVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the video covers the entire viewport */
+    z-index: -1; /* Place the video behind other content */
+}
+    .scroll-text {
+      white-space: nowrap;
+      overflow: hidden;
+      animation: scrollText 20s linear infinite;
+      /* Adjust animation duration as needed */
+    }
+
+    @keyframes scrollText {
+      0% {
+        transform: translateX(100%);
+      }
+
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+        background-size: cover; 
+            background-repeat: no-repeat;
+            background-position: center center;
+    }
+
+    .container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* background-color: #f0f0f0; */
+      overflow: hidden;
+      position: relative;
+      /* Add this positioning */
+    }
+
+    .upper,
+    .lower,
+    .center{
+      height: 20%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+
+    .main-content {
+      position: relative;
+      /* Add this positioning */
+      width: 100%;
+
+      padding: 20px;
+      /* background-color: rgba(255, 255, 255, 0.8); */
+      /* overflow-y: scroll; */
+      max-height: 100%;
+
+    }
+    
+    /*.reference-left {
+      color: red;
+      z-index: 2;
+      margin-top: 2%;
+      display: block;
+      text-align: left;
+      position: relative;
+      padding-right:  25%;
+      float: left;
+
+
+    }
+    .reference-right {
+      color: white;
+      z-index: 2;
+      margin-top: 2%;
+      display: block;
+      text-align: right;
+      position: relative;
+      padding-right:  28%;
+      float:right;
+
+    }
+
+    .reference-center {
+      color: violet;
+      z-index: 2;
+      margin-top: 2%;
+      display: block;
+      text-align: center;
+      position: relative;
+      padding-right:  28%;
+      float:right
+
+     } */
+
+    .front {
+      color: white;
+      z-index: 2;
+      position: relative;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .front-left {
+      color: white;
+      z-index: 2;
+      position: relative;
+      margin-top: 20px;
+  
+      /* text-align: center; */
+    }
+    .front-right {
+      color: white;
+      z-index: 2;
+      position: relative;
+      margin-top: 20px;
+
+    }
+
+    /* You can add more specific styles for your videos here
+    .reference {
+      color: white;
+      z-index: 2;
+      position: relative;
+      margin-top: 20px;
+      text-align: right;
+
+    } */
+    .background-video {
+      z-index: 1;
+      margin-top: 30px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      /* This ensures the video doesn't block interactions */
+    }
+    .ucontainer{
+      display: flex;
+      position:absolute;
+     /* Distribute items evenly */
+     /* Center vertically */
+    }
+    .left {
+      color:red;
+      z-index:2;
+      flex: 0 0 auto; /* Don't grow or shrink */
+}
+
+.center {
+  color:red;
+  z-index:2;
+  flex: 1; /* Grow and take available space */
+  text-align: center; /* Center text */
+}
+
+.right {
+  color:red;
+    z-index:2;
+  flex: 0 0 auto; /* Don't grow or shrink */
+  text-align: right; /* Align text to the right */
+}
+  </style>
+  <script src="/socket.io/socket.io.js"></script>
+
+</head>
+    <!-- Slide Video player full screen -->
+
+<body id="body">
+  <video id="mainbackgroundVideo" autoplay muted loop>
+    <!-- <source src="/bgvideos/1v.mp4" type="video/mp4"> -->
+    <!-- Add additional source elements for different video formats if needed -->
+</video>
+  <div class="upper">
+    <div class="container">
+      <div class="ucontainer">
+        <p class="left">LEFT</p>
+        <p class="center">Center</p>
+        <p class="right">Right</p>
+      </div>
+      <div class="main-content" id="upperdiv">
+        <p class="front" id="upperContainer">I CAN DO ALL THINGS THROUGH CHRIST WHO STREGTHENS ME</p>
+        
+        
+        <!-- <p class="reference-left" id="upref">Test reference</p>
+        <p class="reference-right" id="upref">Test reference</p>
+        <p class="reference-center" id="upref">Test reference</p> -->
+        <video class="background-video" autoplay loop muted  id="backgroundVideoupper">
+          <source src="/bgvideos/" type="video/mp4">
+          <source src="1.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="main-content" id="centerdiv">
+      <h2 class="front" id="centerContainer">I CAN DO ALL THINGS THROUGH CHRIST WHO STREGTHENS ME</h2>
+     <!--<ul>
+        <li class="reference-left" id="centerref"> Test reference</li>
+        <li class="reference-center" id="centerref"> Test reference</li>
+        <li class="reference-right" id="centerref"> Test reference</li>
+    </ul>--> 
+    
+    <div class="ucontainer">
+      <p class="left">Left</p>
+      <p class="center">Center</p>
+      <p class="right">Right</p>
+    </div>
+      <video class="background-video" autoplay loop muted id="backgroundVideocenter">
+        <source src="/bgvideos/.mp4" type="video/mp4">
+        <source src="1.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+
+
+  <div class="lower">
+    <div class="container">
+      <div class="main-content" id="lowerdiv">
+        <p class="front" id="lowerContainer">I CAN DO ALL THINGS THROUGH CHRIST WHO STREGTHENS ME</p>
+        <div class="ucontainer">
+          <p class="left">Left</p>
+          <p class="center">Center</p>
+          <p class="right">Right</p>
+        </div>
+        <video class="background-video" autoplay loop muted id="backgroundVideo">
+          <source src="/bgvideos/" type="video/mp4">
+          <source src="1.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="scrolling-container">
+    <div class="scrolling-content">
+        hello
+    </div> -->
+
+  <script>
+    let screentype;
+    let bg = false;
+    let bgimage = false;
+    const socket = io();
+    socket.on('screentypeUpdated', function (data) {
+      console.log(data);
+      if (data == "2") {     //upper
+        screentype = 2;
+      }
+      else if (data == "3") {       //center
+        screentype = 3;
+      }
+      else {                  //lower
+        screentype = 1;
+      }
+    });
+    socket.on('screenbgUpdated', function (data) {
+      console.log("from html" + data);
+      bg = data;
+    });
+    socket.on('screenbgimageUpdated', function (data) {
+      console.log("from html image " + data);
+      bgimage = data;
+    });
+
+    function checkbgvalue() {
+      return bg;
+    }
+    function checkbgimage() {
+      console.log(bgimage);
+      return bgimage;
+    }
+    function setFontSizeById(elementId, fontSize) {
+  const element = document.getElementById(elementId);
+
+ 
+    element.style.fontSize = fontSize+"px";
+  
+}
+function setFontFamilyById(elementId, fontFamily) {
+  const element = document.getElementById(elementId);
+
+ 
+    element.style.fontFamily = fontFamily;
+  
+}
+function setFontColorById(elementId, fontColor) {
+  const element = document.getElementById(elementId);
+
+
+    element.style.color = fontColor;
+  
+}
+
+// function setTextAlignClassById(elementId, textAlignValue) {
+//   const element = document.getElementById(elementId);
+//   console.log(textAlignValue);
+
+
+//     console.log("inside align");
+//     // Remove existing classes
+//     // element.classList.remove('front', 'front-left', 'front-right');
+
+//     // Add the class based on the textAlignValue
+//     if (textAlignValue == 'left') {
+//       element.classList.add('front-left');
+//     } else if (textAlignValue == 'center') {
+//       element.classList.add('front');
+//     } else if (textAlignValue == 'right') {
+//       element.classList.add('front-right');
+//     }
+ 
+// }
+
+
+
+
+
+    
+
+    socket.on('dataUpdated', function (data) {
+
+      var lowerContainer = document.getElementById('lowerContainer');
+      var lowerdiv = document.getElementById('lowerdiv');
+      var upperdiv = document.getElementById('upperdiv');
+      var centerdiv = document.getElementById('centerdiv');
+
+
+
+
+      var upperContainer = document.getElementById('upperContainer');
+      var centerContainer = document.getElementById('centerContainer');
+      var lowrefrence = document.getElementById('lowref');
+      var uprefrence = document.getElementById('upref');
+      var centerrefrence = document.getElementById('centerref');
+
+
+
+
+      var body = document.getElementById('body');
+      let displaytext = data.data.displaytext;
+      var backgroundVideo = document.getElementById('backgroundVideo');
+      var backgroundVideoupper = document.getElementById('backgroundVideoupper');
+      var backgroundVideocenter = document.getElementById('backgroundVideocenter');
+      var mainbackgroundVideo = document.getElementById('mainbackgroundVideo');
+
+
+      lowerContainer.style.backgroundImage = '';
+      lowerdiv.style.backgroundImage = '';
+      upperdiv.style.backgroundImage = '';
+      centerdiv.style.backgroundImage = '';
+
+
+
+      upperContainer.style.backgroundImage = '';
+      centerContainer.style.backgroundImage = '';
+      body.style.backgroundImage = '';
+
+      lowerdiv.style.backgroundColor = '';
+      upperdiv.style.backgroundColor = '';
+      centerdiv.style.backgroundColor = '';
+
+
+
+      lowerContainer.style.backgroundColor = '';
+
+      backgroundVideo.pause();
+      backgroundVideo.removeAttribute('src');
+      backgroundVideo.load();
+
+      backgroundVideoupper.innerHTML = "";
+      backgroundVideoupper.load();
+      backgroundVideocenter.innerHTML = "";
+      backgroundVideocenter.load();
+      backgroundVideo.innerHTML = "";
+      backgroundVideo.load();
+      mainbackgroundVideo.innerHTML = "";
+      mainbackgroundVideo.load();
+
+
+
+
+      upperContainer.style.display = 'none';
+      lowerContainer.style.display = 'none';
+      centerContainer.style.display = 'none';
+      lowrefrence.style.display = 'none';
+      uprefrence.style.display = 'none';
+      centerrefrence.style.display='none';
+
+      lowerContainer.classList.remove('scroll-text');
+      upperContainer.classList.remove('scroll-text');
+     
+
+      //body styles
+      body.style.fontSize = data.styling.fontsize + "px";
+      body.style.fontFamily = data.styling.fontFamily;
+      if (data.styling.fontstyle == "bold") {
+        body.style.fontWeight = data.styling.fontstyle;
+        body.style.fontStyle = "";  // Change to your desired font style
+
+      }
+      else if (data.styling.fontstyle == "italic") {
+        body.style.fontWeight = "";
+        body.style.fontStyle = data.styling.fontstyle;  // Change to your desired font style
+      }
+      else if (data.styling.fontstyle == "line-through") {
+        body.style.textDecoration = "line-through";
+
+      }
+      checkbgvalue();
+      checkbgimage();
+      switch (data.data.datatype) {
+        case "UPPERTHIRD":
+
+        // lowerContainer.classList.remove('ref');
+        if (data.styling.bgimage != "" && !bg) {
+            backgroundVideoupper.innerHTML = "";
+            backgroundVideoupper.load();
+            let imagepath = data.styling.bgimage;
+            const parts = imagepath.split('\\');
+            const filename = parts[parts.length - 1];
+            upperContainer.style.backgroundImage = `url('/bgimages/${filename}')`;
+          }
+          else if (data.styling.bgvideo != "" && !bg) {
+            upperContainer.style.backgroundColor = "";
+
+            let videopath = data.styling.bgvideo.file;
+            console.log(videopath);
+            const parts = videopath.split('\\');
+            const filename = parts[parts.length - 1];
+            backgroundVideoupper.innerHTML = `<source src="/bgvideos/${filename}" type="video/mp4 " preload = "auto">`;
+            backgroundVideoupper.load();
+          }
+          else if (!bg) {
+            backgroundVideoupper.innerHTML = "";
+            backgroundVideoupper.load();
+
+
+            upperContainer.style.backgroundColor = data.styling.bgcolor;
+            upperContainer.style.color = data.styling.fontcolor;
+          }
+          else {
+            backgroundVideoupper.innerHTML = ''; // Clear the video sources
+
+            backgroundVideoupper.load();
+
+
+            upperContainer.style.backgroundImage = '';
+
+            upperContainer.style.backgroundColor = "transparent";
+            upperContainer.style.color = data.styling.fontcolor;
+          }
+          upperContainer.style.color = data.styling.fontcolor;
+
+
+          upperContainer.style.display = '';
+     
+          upperContainer.innerHTML = displaytext;
+          setFontSizeById(upperContainer,data.styling.fontsize);
+          setFontFamilyById(upperContainer,data.styling.fontFamily);
+          setFontColorById(upperContainer,data.styling.fontcolor);
+          if (data.styling.textalign == 'left') {
+            upperContainer.classList.remove('front');
+            upperContainer.classList.remove('front-right');
+
+            upperContainer.classList.add('front-left');
+    } 
+    else if (data.styling.textalign == 'right') {
+      upperContainer.classList.remove('front');
+      upperContainer.classList.remove('front-left');
+
+      upperContainer.classList.add('front-right');
+    }
+    else if (data.styling.textalign == 'center') {
+      upperContainer.classList.remove('front-right');
+      upperContainer.classList.remove('front-left');
+
+      upperContainer.classList.add('front');
+    } 
+    else{
+      upperContainer.classList.add('front');
+
+    }
+
+          break;
+        case "LOWERTHIRD"://LOADSTART
+          if (data.styling.bgimage != "" && !bg) {
+            let imagepath = data.styling.bgimage;
+            const parts = imagepath.split('\\');
+            const filename = parts[parts.length - 1];
+            lowerContainer.style.backgroundImage = `url('/bgimages/${filename}')`;
+          }
+          else if (data.styling.bgvideo != "" && !bg) {
+            lowerContainer.style.backgroundColor = "";
+
+            let videopath = data.styling.bgvideo.file;
+            console.log(videopath);
+            const parts = videopath.split('\\');
+            const filename = parts[parts.length - 1];
+            backgroundVideo.innerHTML = `<source src="/bgvideos/${filename}" type="video/mp4 " preload = "auto">`;
+            backgroundVideo.load();
+          }
+          else if (!bg) {
+            backgroundVideo.innerHTML = "";
+            backgroundVideo.load();
+
+
+            lowerContainer.style.backgroundColor = data.styling.bgcolor;
+            lowerContainer.style.color = data.styling.fontcolor;
+          }
+          else {
+            backgroundVideo.innerHTML = ''; // Clear the video sources
+
+            backgroundVideo.load();
+
+
+            lowerContainer.style.backgroundImage = '';
+
+            lowerContainer.style.backgroundColor = "transparent";
+            lowerContainer.style.color = data.styling.fontcolor;
+          }
+          lowerContainer.style.color = data.styling.fontcolor;
+
+          lowerContainer.style.display = '';
+          lowerContainer.innerHTML = displaytext;
+          setFontSizeById(lowerContainer,data.styling.fontsize);
+          setFontFamilyById(lowerContainer,data.styling.fontFamily);
+          setFontColorById(lowerContainer,data.styling.fontcolor);
+          // setTextAlignClassById(lowerContainer,data.styling.textalign);
+          
+  console.log(data.styling.textalign);
+
+
+    console.log("inside align");
+    // Remove existing classes
+    // element.classList.remove('front', 'front-left', 'front-right');
+
+    // Add the class based on the textAlignValue
+    if (data.styling.textalign == 'left') {
+      lowerContainer.classList.remove('front');
+      lowerContainer.classList.remove('front-right');
+
+      lowerContainer.classList.add('front-left');
+    } 
+    else if (data.styling.textalign == 'right') {
+      lowerContainer.classList.remove('front');
+      lowerContainer.classList.remove('front-left');
+
+      lowerContainer.classList.add('front-right');
+    }
+    else if (data.styling.textalign == 'center') {
+      lowerContainer.classList.remove('front-right');
+      lowerContainer.classList.remove('front-left');
+
+      lowerContainer.classList.add('front');
+    } 
+    else{
+      lowerContainer.classList.add('front');
+
+    }
+  
+
+
+
+
+          // lowerContainer.style.textAlign = 'right'; // Change 'center' to the desired alignment value
+
+          // upperContainer.style.display = 'none';
+          // centerContainer.style.display = 'none';
+          break;
+        case "FULLSCREEN":
+        if (data.styling.bgimage != "" && !bg) {
+            backgroundVideocenter.innerHTML = "";
+            backgroundVideocenter.load();
+            let imagepath = data.styling.bgimage;
+            const parts = imagepath.split('\\');
+            const filename = parts[parts.length - 1];
+            centerContainer.style.backgroundImage = `url('/bgimages/${filename}')`;
+          }
+          else if (data.styling.bgvideo != "" && !bg) {
+            centerContainer.style.backgroundColor = "";
+
+            let videopath = data.styling.bgvideo.file;
+            console.log(videopath);
+            const parts = videopath.split('\\');
+            const filename = parts[parts.length - 1];
+            backgroundVideocenter.innerHTML = `<source src="/bgvideos/${filename}" type="video/mp4 " preload = "auto">`;
+            backgroundVideocenter.load();
+          }
+          else if (!bg) {
+            backgroundVideocenter.innerHTML = "";
+            backgroundVideocenter.load();
+
+
+            centerContainer.style.backgroundColor = data.styling.bgcolor;
+            centerContainer.style.color = data.styling.fontcolor;
+          }
+          else {
+            backgroundVideocenter.innerHTML = ''; // Clear the video sources
+
+            backgroundVideocenter.load();
+
+
+            centerContainer.style.backgroundImage = '';
+
+            centerContainer.style.backgroundColor = "transparent";
+            centerContainer.style.color = data.styling.fontcolor;
+          }
+          centerContainer.style.color = data.styling.fontcolor;
+
+
+          centerContainer.style.display = '';
+          // centerContainer.style.display = 'none';
+          // lowerContainer.style.display = 'none';
+          // document.getElementById('upperContainer').innerHTML = displaytext;
+          centerContainer.innerHTML = displaytext;
+          setFontSizeById(centerContainer,data.styling.fontsize);
+          setFontFamilyById(centerContainer,data.styling.fontFamily);
+          setFontColorById(centerContainer,data.styling.fontcolor);
+          console.log(centerContainer,data.styling.textalign);
+          setTextAlignClassById(centerContainer,data.styling.textalign);
+       
+
+          break;
+        case "SCRIPTURELOWERTHIRD":
+          if (data.styling.bgimage != "" && !bg) {
+            backgroundVideoupper.innerHTML = "";
+            backgroundVideoupper.load();
+            let imagepath = data.styling.bgimage;
+            const parts = imagepath.split('\\');
+            const filename = parts[parts.length - 1];
+            lowerdiv.style.backgroundImage = `url('/bgimages/${filename}')`;
+          }
+          else if (data.styling.bgvideo != "" && !bg) {
+            lowerdiv.style.backgroundColor = "";
+            lowerdiv.style.backgroundImage = '';
+
+
+            let videopath = data.styling.bgvideo.file;
+            console.log(videopath);
+            const parts = videopath.split('\\');
+            const filename = parts[parts.length - 1];
+            backgroundVideo.innerHTML = `<source src="/bgvideos/${filename}" type="video/mp4 " preload = "auto">`;
+            backgroundVideo.load();
+          }
+          else if (!bg) {
+            backgroundVideo.innerHTML = "";
+            backgroundVideo.load();
+
+
+            lowerdiv.style.backgroundColor = data.styling.bgcolor;
+            lowerContainer.style.color = data.styling.fontcolor;
+          }
+          else {
+            backgroundVideo.innerHTML = ''; // Clear the video sources
+
+            backgroundVideo.load();
+
+
+            lowerContainer.style.backgroundImage = '';
+
+            lowerContainer.style.backgroundColor = "transparent";
+            lowerContainer.style.color = data.styling.fontcolor;
+          }
+          lowerContainer.style.display = '';
+          lowrefrence.style.display = '';
+          lowerContainer.innerHTML = displaytext;
+          lowrefrence.innerHTML = data.data.reference;
+          lowerContainer.style.color = data.styling.fontcolor;
+          lowrefrence.style.color = data.styling.fontcolor; 
+          lowrefrence.fontStyle.fontSize = data.styling.fontReference+"px";
+
+
+
+          // const referenceSpan = document.createElement('span');
+          // referenceSpan.textContent = data.data.reference;
+          // referenceSpan.className = 'reference'; // Apply a class for styling if needed
+          // referenceSpan.style.fontSize = data.styling.fontReference;              
+
+          // lowerContainer.appendChild(referenceSpan);          
+          // upperContainer.style.display = 'none';
+          // centerContainer.style.display ='none';
+
+          setFontSizeById(lowerContainer,data.styling.fontsize);
+          setFontFamilyById(lowerContainer,data.styling.fontFamily);
+          setFontColorById(lowerContainer,data.styling.fontcolor);
+          setFontSizeById(lowrefrence,data.styling.fontReference);
+          setFontFamilyById(lowrefrence,data.styling.fontReference);
+          setFontColorById(lowrefrence,data.styling.fontcolor);
+          break;
+        case "SCRIPTURE":
+        if (data.styling.bgimage != "" && !bg) {
+          backgroundVideocenter.innerHTML = "";
+          backgroundVideocenter.load();
+            let imagepath = data.styling.bgimage;
+            const parts = imagepath.split('\\');
+            const filename = parts[parts.length - 1];
+            centerdiv.style.backgroundImage = `url('/bgimages/${filename}')`;
+          }
+          else if (data.styling.bgvideo != "" && !bg) {
+            centerdiv.style.backgroundColor = "";
+            centerdiv.style.backgroundImage = '';
+
+
+            let videopath = data.styling.bgvideo.file;
+            console.log(videopath);
+            const parts = videopath.split('\\');
+            const filename = parts[parts.length - 1];
+            backgroundVideocenter.innerHTML = `<source src="/bgvideos/${filename}" type="video/mp4 " preload = "auto">`;
+            backgroundVideocenter.load();
+          }
+          else if (!bg) {
+            backgroundVideocenter.innerHTML = "";
+            backgroundVideocenter.load();
+
+
+            centerdiv.style.backgroundColor = data.styling.bgcolor;
+            centerContainer.style.color = data.styling.fontcolor;
+          }
+          else {
+            backgroundVideocenter.innerHTML = ''; // Clear the video sources
+
+            backgroundVideocenter.load();
+
+
+            centerContainer.style.backgroundImage = '';
+
+            centerContainer.style.backgroundColor = "transparent";
+            centerContainer.style.color = data.styling.fontcolor;
+          }
+          centerContainer.style.display = '';
+          centerrefrence.style.display = '';
+          centerContainer.innerHTML = displaytext;
+          centerrefrence.innerHTML = data.data.reference;
+          centerContainer.style.color = data.styling.fontcolor;
+          centerrefrence.style.color = data.styling.fontcolor;
+
+          break;
+        case "SCRIPTUREUPPERTHIRD":
+        if (data.styling.bgimage != "" && !bg) {
+          backgroundVideoupper.innerHTML = "";
+            backgroundVideoupper.load();
+            let imagepath = data.styling.bgimage;
+            const parts = imagepath.split('\\');
+            const filename = parts[parts.length - 1];
+            upperdiv.style.backgroundImage = `url('/bgimages/${filename}')`;
+          }
+          else if (data.styling.bgvideo != "" && !bg) {
+            upperdiv.style.backgroundColor = "";
+            upperdiv.style.backgroundImage = '';
+
+
+            let videopath = data.styling.bgvideo.file;
+            console.log(videopath);
+            const parts = videopath.split('\\');
+            const filename = parts[parts.length - 1];
+            backgroundVideoupper.innerHTML = `<source src="/bgvideos/${filename}" type="video/mp4 " preload = "auto">`;
+            backgroundVideoupper.load();
+          }
+          else if (!bg) {
+            backgroundVideoupper.innerHTML = "";
+            backgroundVideoupper.load();
+
+
+            upperdiv.style.backgroundColor = data.styling.bgcolor;
+            upperContainer.style.color = data.styling.fontcolor;
+          }
+          else {
+            backgroundVideoupper.innerHTML = ''; // Clear the video sources
+
+            backgroundVideoupper.load();
+
+
+            upperContainer.style.backgroundImage = '';
+
+            upperContainer.style.backgroundColor = "transparent";
+            upperContainer.style.color = data.styling.fontcolor;
+          }
+          upperContainer.style.display = '';
+          uprefrence.style.display = '';
+          upperContainer.innerHTML = displaytext;
+          uprefrence.innerHTML = data.data.reference;
+          upperContainer.style.color = data.styling.fontcolor;
+          uprefrence.style.color = data.styling.fontcolor;
+          // const referenceSpannn = document.createElement('span');
+          // referenceSpannn.textContent = data.data.reference;
+          // referenceSpannn.className = 'center-text'; // Apply a class for styling if needed
+          // referenceSpannn.style.fontSize = data.styling.fontReference;
+
+          // upperContainer.appendChild(referenceSpannn);
+          break;
+        case "LOWERMARQUEE"://LOADSTART
+        if (data.styling.bgimage != "" && !bg) {
+            let imagepath = data.styling.bgimage;
+            const parts = imagepath.split('\\');
+            const filename = parts[parts.length - 1];
+            lowerContainer.style.backgroundImage = `url('/bgimages/${filename}')`;
+          }
+          else if (data.styling.bgvideo != "" && !bg) {
+            lowerContainer.style.backgroundColor = "";
+
+            let videopath = data.styling.bgvideo.file;
+            console.log(videopath);
+            const parts = videopath.split('\\');
+            const filename = parts[parts.length - 1];
+            backgroundVideo.innerHTML = `<source src="/bgvideos/${filename}" type="video/mp4 " preload = "auto">`;
+            backgroundVideo.load();
+          }
+          else if (!bg) {
+            backgroundVideo.innerHTML = "";
+            backgroundVideo.load();
+
+
+            lowerContainer.style.backgroundColor = data.styling.bgcolor;
+            lowerContainer.style.color = data.styling.fontcolor;
+          }
+          else {
+            backgroundVideo.innerHTML = ''; // Clear the video sources
+
+            backgroundVideo.load();
+
+
+            lowerContainer.style.backgroundImage = '';
+
+            lowerContainer.style.backgroundColor = "transparent";
+            lowerContainer.style.color = data.styling.fontcolor;
+          }
+          lowerContainer.style.display = '';
+          lowerContainer.innerHTML = displaytext;
+          lowerContainer.classList.add('scroll-text');
+          break;
+        case "UPPERMARQUEE"://LOADSTART
+        if (data.styling.bgimage != "" && !bg) {
+            backgroundVideoupper.innerHTML = "";
+            backgroundVideoupper.load();
+            let imagepath = data.styling.bgimage;
+            const parts = imagepath.split('\\');
+            const filename = parts[parts.length - 1];
+            upperContainer.style.backgroundImage = `url('/bgimages/${filename}')`;
+          }
+          else if (data.styling.bgvideo != "" && !bg) {
+            upperContainer.style.backgroundColor = "";
+            let videopath = data.styling.bgvideo.file;
+            console.log(videopath);
+            const parts = videopath.split('\\');
+            const filename = parts[parts.length - 1];
+            backgroundVideoupper.innerHTML = `<source src="/bgvideos/${filename}" type="video/mp4 " preload = "auto">`;
+            backgroundVideoupper.load();
+          }
+          else if (!bg) {
+            backgroundVideoupper.innerHTML = "";
+            backgroundVideoupper.load();
+
+
+            upperContainer.style.backgroundColor = data.styling.bgcolor;
+            upperContainer.style.color = data.styling.fontcolor;
+          }
+          else {
+            backgroundVideoupper.innerHTML = ''; // Clear the video sources
+
+            backgroundVideoupper.load();
+
+
+            upperContainer.style.backgroundImage = '';
+
+            upperContainer.style.backgroundColor = "transparent";
+            upperContainer.style.color = data.styling.fontcolor;
+          }
+          upperContainer.style.display = '';
+          upperContainer.innerHTML = displaytext;
+          upperContainer.classList.add('scroll-text');
+          break;
+        case "DISPLAYIMAGE"://LOADSTART
+          let imagepath = data.data.url;
+          const parts = imagepath.split('\\');
+          const filename = parts[parts.length - 1];
+          body.style.backgroundImage = `url('/mediaimages/${filename}')`;
+          break;
+        case "SLIDES-1": // CLOSE
+        if (data.styling.bgimage != "" && !bg) {
+            // backgroundVideocenter.innerHTML = "";
+            // backgroundVideocenter.load();
+            let imagepath = data.styling.bgimage;
+            const parts = imagepath.split('\\');
+            const filename = parts[parts.length - 1];
+            body.style.backgroundImage = `url('/bgimages/${filename}')`;
+          }
+          else if (data.styling.bgvideo != "" && !bg) {
+            body.style.backgroundColor = "";
+
+            let videopath = data.styling.bgvideo.file;
+            console.log(videopath);
+            const parts = videopath.split('\\');
+            const filename = parts[parts.length - 1];
+            mainbackgroundVideo.innerHTML = `<source src="/bgvideos/${filename}" type="video/mp4 " preload = "auto">`;
+            mainbackgroundVideo.load();
+          }  
+        else if (!bg) {
+            // body.style.backgroundImage = "";
+            body.style.backgroundColor = data.styling.bgcolor;
+            body.style.color = data.styling.fontcolor;
+            console.log("from if")
+          }
+          else {
+            //  body.style.backgroundImage = "";
+            body.style.backgroundColor = "transparent";
+            body.style.color = data.styling.fontcolor;
+            console.log("else");
+          }
+
+          upperContainer.style.display = '';
+          centerContainer.style.display = '';
+
+          // centerContainer.style.display = 'none';
+          // lowerContainer.style.display = 'none';
+          document.getElementById('upperContainer').innerHTML = displaytext;
+          
+          upperContainer.style.textAlign = 'center';
+          centerContainer.classList.remove('front');
+          centerContainer.classList.add('front-left');
+
+
+          var referenceValue = data.data.reference.replace(/\n/g, "</li><li>");
+          centerContainer.innerHTML = "<ul><li>" + referenceValue + "</li></ul>";
+          
+          setFontSizeById(upperContainer,data.styling.fontTitle);
+          setFontSizeById(centerContainer,data.styling.fontBullets);
+
+          setFontFamilyById(upperContainer,data.styling.fontFamily);
+          setFontFamilyById(centerContainer,data.styling.fontFamily);
+
+          setFontColorById(upperContainer,data.styling.fontcolor);
+          setFontColorById(centerContainer,data.styling.fontcolor);
+
+          break;
+        case "SLIDES-2": // CLOSE
+          lowerContainer.classList.remove('ref');
+          if (data.styling.bgimage != "" && !bg) {
+            // backgroundVideocenter.innerHTML = "";
+            // backgroundVideocenter.load();
+            let imagepath = data.styling.bgimage;
+            const parts = imagepath.split('\\');
+            const filename = parts[parts.length - 1];
+            body.style.backgroundImage = `url('/bgimages/${filename}')`;
+          }
+          else if (data.styling.bgvideo != "" && !bg) {
+            body.style.backgroundColor = "";
+
+            let videopath = data.styling.bgvideo.file;
+            console.log(videopath);
+            const parts = videopath.split('\\');
+            const filename = parts[parts.length - 1];
+            mainbackgroundVideo.innerHTML = `<source src="/bgvideos/${filename}" type="video/mp4 " preload = "auto">`;
+            mainbackgroundVideo.load();
+          }  
+        else if (!bg) {
+            // body.style.backgroundImage = "";
+            body.style.backgroundColor = data.styling.bgcolor;
+            body.style.color = data.styling.fontcolor;
+            console.log("from if")
+          }
+          else {
+            //  body.style.backgroundImage = "";
+            body.style.backgroundColor = "transparent";
+            body.style.color = data.styling.fontcolor;
+            console.log("else");
+          }
+
+          upperContainer.style.display = '';
+          centerContainer.style.display = '';
+
+          // centerContainer.style.display = 'none';
+          // lowerContainer.style.display = 'none';
+          centerContainer.classList.remove('front');
+          centerContainer.classList.add('front-left');
+          document.getElementById('upperContainer').innerHTML = displaytext;
+          upperContainer.style.textAlign = 'center';
+          var referenceValue = data.data.reference.replace(/\n/g, "</li><li>");
+          var referenceItems = referenceValue.split("</li><li>");
+          var formattedReference = "<ul style='list-style-type: none;'>";
+
+          for (var i = 0; i < referenceItems.length; i++) {
+            formattedReference += "<li>" + (i + 1) + ". " + referenceItems[i] + "</li>";
+          }
+
+          formattedReference += "</ul>";
+
+          centerContainer.innerHTML = formattedReference;
+          break;
+        case "SLIDES-5": // CLOSE
+          lowerContainer.classList.remove('ref');
+          if (data.styling.bgimage != "" && !bg) {
+            // backgroundVideocenter.innerHTML = "";
+            // backgroundVideocenter.load();
+            let imagepath = data.styling.bgimage;
+            const parts = imagepath.split('\\');
+            const filename = parts[parts.length - 1];
+            body.style.backgroundImage = `url('/bgimages/${filename}')`;
+          }
+          else if (data.styling.bgvideo != "" && !bg) {
+            body.style.backgroundColor = "";
+
+            let videopath = data.styling.bgvideo.file;
+            console.log(videopath);
+            const parts = videopath.split('\\');
+            const filename = parts[parts.length - 1];
+            mainbackgroundVideo.innerHTML = `<source src="/bgvideos/${filename}" type="video/mp4 " preload = "auto">`;
+            mainbackgroundVideo.load();
+          }  
+        else if (!bg) {
+            // body.style.backgroundImage = "";
+            body.style.backgroundColor = data.styling.bgcolor;
+            body.style.color = data.styling.fontcolor;
+            console.log("from if")
+          }
+          else {
+            //  body.style.backgroundImage = "";
+            body.style.backgroundColor = "transparent";
+            body.style.color = data.styling.fontcolor;
+            console.log("else");
+          }
+
+          upperContainer.style.display = '';
+
+          // centerContainer.style.display = 'none';
+          // lowerContainer.style.display = 'none';
+          upperContainer.innerHTML = displaytext;
+          upperContainer.style.textAlign = 'center';
+          break;
+        case "SLIDES-4": // CLOSE
+          lowerContainer.classList.remove('ref');
+          if (data.styling.bgimage != "" && !bg) {
+            // backgroundVideocenter.innerHTML = "";
+            // backgroundVideocenter.load();
+            let imagepath = data.styling.bgimage;
+            const parts = imagepath.split('\\');
+            const filename = parts[parts.length - 1];
+            body.style.backgroundImage = `url('/bgimages/${filename}')`;
+          }
+          else if (data.styling.bgvideo != "" && !bg) {
+            body.style.backgroundColor = "";
+
+            let videopath = data.styling.bgvideo.file;
+            console.log(videopath);
+            const parts = videopath.split('\\');
+            const filename = parts[parts.length - 1];
+            mainbackgroundVideo.innerHTML = `<source src="/bgvideos/${filename}" type="video/mp4 " preload = "auto">`;
+            mainbackgroundVideo.load();
+          }  
+        else if (!bg) {
+            // body.style.backgroundImage = "";
+            body.style.backgroundColor = data.styling.bgcolor;
+            body.style.color = data.styling.fontcolor;
+            console.log("from if")
+          }
+          else {
+            //  body.style.backgroundImage = "";
+            body.style.backgroundColor = "transparent";
+            body.style.color = data.styling.fontcolor;
+            console.log("else");
+          }
+
+          upperContainer.style.display = '';
+
+          // centerContainer.style.display = 'none';
+          // lowerContainer.style.display = 'none';
+          upperContainer.innerHTML = displaytext;
+          upperContainer.style.textAlign = 'center';
+          upperContainer.fontStyle.fontSize = data.styling.fontTitle + "px";
+          break;
+        case "SLIDES-5": // CLOSE
+          if (data.styling.bgimage != "" && !bg) {
+            // backgroundVideocenter.innerHTML = "";
+            // backgroundVideocenter.load();
+            let imagepath = data.styling.bgimage;
+            const parts = imagepath.split('\\');
+            const filename = parts[parts.length - 1];
+            body.style.backgroundImage = `url('/bgimages/${filename}')`;
+          }
+          else if (data.styling.bgvideo != "" && !bg) {
+            body.style.backgroundColor = "";
+
+            let videopath = data.styling.bgvideo.file;
+            console.log(videopath);
+            const parts = videopath.split('\\');
+            const filename = parts[parts.length - 1];
+            mainbackgroundVideo.innerHTML = `<source src="/bgvideos/${filename}" type="video/mp4 " preload = "auto">`;
+            mainbackgroundVideo.load();
+          }  
+        else if (!bg) {
+            // body.style.backgroundImage = "";
+            body.style.backgroundColor = data.styling.bgcolor;
+            body.style.color = data.styling.fontcolor;
+            console.log("from if")
+          }
+          else {
+            //  body.style.backgroundImage = "";
+            body.style.backgroundColor = "transparent";
+            body.style.color = data.styling.fontcolor;
+            console.log("else");
+          }
+          upperContainer.style.display = '';
+          
+
+          lowerContainer.style.display = '';
+          document.getElementById('lowerContainer').innerHTML = displaytext;
+          // lowerContainer.innerHTML = displaytext;
+          lowerContainer.style.textAlign = 'center';
+          lowerContainer.fontStyle.fontSize = data.styling.fontTitle + "px";
+          break;
+          case "LOWERTHIRDTIMER"://LOADSTART
+          if (data.styling.bgimage != "" && !bg) {
+            let imagepath = data.styling.bgimage;
+            const parts = imagepath.split('\\');
+            const filename = parts[parts.length - 1];
+            lowerContainer.style.backgroundImage = `url('/bgimages/${filename}')`;
+          }
+          else if (data.styling.bgvideo != "" && !bg) {
+            lowerContainer.style.backgroundColor = "";
+
+            let videopath = data.styling.bgvideo.file;
+            console.log(videopath);
+            const parts = videopath.split('\\');
+            const filename = parts[parts.length - 1];
+            backgroundVideo.innerHTML = `<source src="/bgvideos/${filename}" type="video/mp4 " preload = "auto">`;
+            backgroundVideo.load();
+          }
+          else if (!bg) {
+            backgroundVideo.innerHTML = "";
+            backgroundVideo.load();
+
+
+            lowerContainer.style.backgroundColor = data.styling.bgcolor;
+            lowerContainer.style.color = data.styling.fontcolor;
+          }
+          else {
+            backgroundVideo.innerHTML = ''; // Clear the video sources
+
+            backgroundVideo.load();
+
+
+            lowerContainer.style.backgroundImage = '';
+
+            lowerContainer.style.backgroundColor = "transparent";
+            lowerContainer.style.color = data.styling.fontcolor;
+          }
+          lowerContainer.style.color = data.styling.fontcolor;
+
+          lowerContainer.style.display = '';
+          lowerContainer.innerHTML = displaytext;
+          setFontSizeById(lowerContainer,data.styling.fontsize);
+          setFontFamilyById(lowerContainer,data.styling.fontFamily);
+          setFontColorById(lowerContainer,data.styling.fontcolor);
+          // setTextAlignClassById(lowerContainer,data.styling.textalign);
+          
+  console.log(data.styling.textalign);
+
+
+    console.log("inside align");
+    // Remove existing classes
+    // element.classList.remove('front', 'front-left', 'front-right');
+
+    // Add the class based on the textAlignValue
+    if (data.styling.textalign == 'left') {
+      lowerContainer.classList.remove('front');
+      lowerContainer.classList.remove('front-right');
+
+      lowerContainer.classList.add('front-left');
+    } 
+    else if (data.styling.textalign == 'right') {
+      lowerContainer.classList.remove('front');
+      lowerContainer.classList.remove('front-left');
+
+      lowerContainer.classList.add('front-right');
+    }
+    else if (data.styling.textalign == 'center') {
+      lowerContainer.classList.remove('front-right');
+      lowerContainer.classList.remove('front-left');
+
+      lowerContainer.classList.add('front');
+    } 
+    else{
+      lowerContainer.classList.add('front');
+
+    }
+  
+
+
+
+
+          // lowerContainer.style.textAlign = 'right'; // Change 'center' to the desired alignment value
+
+          // upperContainer.style.display = 'none';
+          // centerContainer.style.display = 'none';
+          break;
+          case "UPPERTHIRDTIMER":
+
+        // lowerContainer.classList.remove('ref');
+        if (data.styling.bgimage != "" && !bg) {
+            backgroundVideoupper.innerHTML = "";
+            backgroundVideoupper.load();
+            let imagepath = data.styling.bgimage;
+            const parts = imagepath.split('\\');
+            const filename = parts[parts.length - 1];
+            upperContainer.style.backgroundImage = `url('/bgimages/${filename}')`;
+          }
+          else if (data.styling.bgvideo != "" && !bg) {
+            upperContainer.style.backgroundColor = "";
+
+            let videopath = data.styling.bgvideo.file;
+            console.log(videopath);
+            const parts = videopath.split('\\');
+            const filename = parts[parts.length - 1];
+            backgroundVideoupper.innerHTML = `<source src="/bgvideos/${filename}" type="video/mp4 " preload = "auto">`;
+            backgroundVideoupper.load();
+          }
+          else if (!bg) {
+            backgroundVideoupper.innerHTML = "";
+            backgroundVideoupper.load();
+
+
+            upperContainer.style.backgroundColor = data.styling.bgcolor;
+            upperContainer.style.color = data.styling.fontcolor;
+          }
+          else {
+            backgroundVideoupper.innerHTML = ''; // Clear the video sources
+
+            backgroundVideoupper.load();
+
+
+            upperContainer.style.backgroundImage = '';
+
+            upperContainer.style.backgroundColor = "transparent";
+            upperContainer.style.color = data.styling.fontcolor;
+          }
+          upperContainer.style.color = data.styling.fontcolor;
+
+
+          upperContainer.style.display = '';
+     
+          upperContainer.innerHTML = displaytext;
+          setFontSizeById(upperContainer,data.styling.fontsize);
+          setFontFamilyById(upperContainer,data.styling.fontFamily);
+          setFontColorById(upperContainer,data.styling.fontcolor);
+          if (data.styling.textalign == 'left') {
+            upperContainer.classList.remove('front');
+            upperContainer.classList.remove('front-right');
+
+            upperContainer.classList.add('front-left');
+    } 
+    else if (data.styling.textalign == 'right') {
+      upperContainer.classList.remove('front');
+      upperContainer.classList.remove('front-left');
+
+      upperContainer.classList.add('front-right');
+    }
+    else if (data.styling.textalign == 'center') {
+      upperContainer.classList.remove('front-right');
+      upperContainer.classList.remove('front-left');
+
+      upperContainer.classList.add('front');
+    } 
+    else{
+      upperContainer.classList.add('front');
+
+    }
+
+          break;
+          case "FULLSCREEN":
+        if (data.styling.bgimage != "" && !bg) {
+            backgroundVideocenter.innerHTML = "";
+            backgroundVideocenter.load();
+            let imagepath = data.styling.bgimage;
+            const parts = imagepath.split('\\');
+            const filename = parts[parts.length - 1];
+            centerContainer.style.backgroundImage = `url('/bgimages/${filename}')`;
+          }
+          else if (data.styling.bgvideo != "" && !bg) {
+            centerContainer.style.backgroundColor = "";
+
+            let videopath = data.styling.bgvideo.file;
+            console.log(videopath);
+            const parts = videopath.split('\\');
+            const filename = parts[parts.length - 1];
+            backgroundVideocenter.innerHTML = `<source src="/bgvideos/${filename}" type="video/mp4 " preload = "auto">`;
+            backgroundVideocenter.load();
+          }
+          else if (!bg) {
+            backgroundVideocenter.innerHTML = "";
+            backgroundVideocenter.load();
+
+
+            centerContainer.style.backgroundColor = data.styling.bgcolor;
+            centerContainer.style.color = data.styling.fontcolor;
+          }
+          else {
+            backgroundVideocenter.innerHTML = ''; // Clear the video sources
+
+            backgroundVideocenter.load();
+
+
+            centerContainer.style.backgroundImage = '';
+
+            centerContainer.style.backgroundColor = "transparent";
+            centerContainer.style.color = data.styling.fontcolor;
+          }
+          centerContainer.style.color = data.styling.fontcolor;
+
+
+          centerContainer.style.display = '';
+          // centerContainer.style.display = 'none';
+          // lowerContainer.style.display = 'none';
+          // document.getElementById('upperContainer').innerHTML = displaytext;
+          centerContainer.innerHTML = displaytext;
+          setFontSizeById(centerContainer,data.styling.fontsize);
+          setFontFamilyById(centerContainer,data.styling.fontFamily);
+          setFontColorById(centerContainer,data.styling.fontcolor);
+          console.log(centerContainer,data.styling.textalign);
+          setTextAlignClassById(centerContainer,data.styling.textalign);
+       
+
+          break;
+
+      }
+
+
+
+
+
+
+    });
+
+
+  </script>
+</body>
+
+</html>
